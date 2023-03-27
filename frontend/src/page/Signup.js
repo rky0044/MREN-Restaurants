@@ -56,13 +56,25 @@ const Signup = () => {
     console.log(data.image,"file");
   }
 
-  const handlesubmit = (e) =>{
+  const handlesubmit = async(e) =>{
 
     e.preventDefault();
     const {firstName,email,password,confirmPassword} = data
+    
     if(firstName && email && password && confirmPassword){
      if(password === confirmPassword){
-      alert("success data");
+      const fetchData = await fetch(`${process.env.REACT_APP_SERVER_DOMIN}/signup`,{
+        method : "POST",
+        headers:{
+          "content-type" : "application/json"
+        },
+        body : JSON.stringify(data)
+
+      })
+
+      const dataRes = await fetchData.json();
+      console.log(dataRes,"11111111111")
+     
       navigate("/login");
      }
      else{
