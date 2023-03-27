@@ -1,13 +1,17 @@
-import logo from './logo.svg';
+import React from 'react';
+import { Outlet } from 'react-router-dom';
 import './App.css';
-import Header from './component/Header';
+import Header from './component/Header.js';
 
 
 function App() {
   return (
     <div>
-     <Header />
-    </div>
+        <Header />
+        <main className='pt-16 bg-slate-100 min-h-[calc(100vh)]'> 
+          <Outlet />
+        </main>
+      </div>
   );
 }
 
