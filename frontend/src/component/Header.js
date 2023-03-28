@@ -3,12 +3,25 @@ import { Link } from 'react-router-dom';
 import logo from '../assest/logo.png';
 import { HiOutlineUserCircle } from 'react-icons/hi';
 import { BsCartFill } from 'react-icons/bs';
+import { useDispatch, useSelector } from 'react-redux';
+import { logOutRedux } from '../redux/userSlice';
+import { toast } from 'react-hot-toast';
+
 
 const Header = () => {
   const [showMenu,SetShowMenu] = useState(false);
+  const dispatch = useDispatch();
+  const userData = useSelector((state)=>state.user);
+  console.log(userData,"userData header")
   const handlaShowMenu = (preve)=>{
     SetShowMenu(preve => !showMenu);
   } 
+
+  const handleLogout = () =>{
+    dispatch(logOutRedux());
+    toast("Logout successfull")
+  }
+  console.log(process.env.REACT_APP_ADMIN_EMAIL)
   return (
     <header className='fixed shadow-md w-full h-16 px-2 md:px-4 z-50 bg-white '>
       {/* desktop */}
@@ -36,14 +49,26 @@ const Header = () => {
             </div>
           </div>
           <div className='text-slate-600'  onClick={handlaShowMenu}>
-            <div className='text-3xl cursor-pointer'>
-              <HiOutlineUserCircle />
+            <div className='text-3xl cursor-pointer w-8 h-8 rounded-full overflow-hidden drop-shadow-md'>
+              {
+                userData?.image ? <img src={userData?.image} className="h-full w-full" /> : <HiOutlineUserCircle />
+              }
             </div>
             {
               showMenu && (
-                <div className='absolute right-2 px-2 py-2 bg-white shadow drop-shadow-md flex flex-col'>
-                <Link to={"newProduct"} className='whitespace-nowrap cursor-pointer '>New product</Link>
-                <Link to={"login"} className='whitespace-nowrap cursor-pointer '>Login</Link>
+                <div className='absolute right-2  py-2 bg-white shadow drop-shadow-md flex flex-col'>
+                  {
+                  userData.email === process.env.REACT_APP_ADMIN_EMAIL && <Link to={"newProduct"} className='whitespace-nowrap cursor-pointer px-2'>New product</Link>
+                  
+                  }
+               
+                {
+                  userData.image ? <p className='cursor-pointer text-white bg-red-400 px-2' onClick={handleLogout}> Logout ({userData.firstName})</p> :
+                  <Link to={"login"} className='whitespace-nowrap cursor-pointer px-2'>Login</Link>
+
+                }
+                
+               
   
               </div>
 
