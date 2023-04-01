@@ -20,6 +20,7 @@ const Header = () => {
   const handleLogout = () =>{
     dispatch(logOutRedux());
     toast("Logout successfull")
+    
   }
   console.log(process.env.REACT_APP_ADMIN_EMAIL)
   return (
