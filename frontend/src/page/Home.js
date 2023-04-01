@@ -1,20 +1,58 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import CardFeature from '../component/CardFeature';
 import HomeCard from '../component/HomeCard'
+import { GrPrevious, GrNext } from "react-icons/gr";
+import FilterProduct from '../component/FilterProduct';
+
+
 
 const Home = (props) => {
   const productData = useSelector((state) => state.product.productList);
   console.log(productData, "fome card");
 
+
+  const [dataFilter, setDataFilter] = useState([])
+
   const homeProductCardList = productData.slice(0, 4);
   console.log(homeProductCardList, "homeProductCardList");
-   
+
 
   const homeProductCardListVegetables = productData.filter(el => el.category === "vegetable")
 
- const loadingArr = new Array(4).fill(null) 
+  const loadingArr = new Array(4).fill(null);
 
+  const slideProductRef = useRef()
+
+  const nextProduct = () => {
+    slideProductRef.current.scrollLeft += 100;
+    console.log(slideProductRef.current.scrollLeft, "rrrrr")
+  }
+
+  const preProduct = () => {
+    console.log("pre");
+    slideProductRef.current.scrollLeft -= 100;
+  }
+
+  const categoryList = [...new Set(productData.map(el => el.category))]
+  console.log(categoryList, "categori")
+
+  useEffect(() => {
+    setDataFilter(productData)
+  }, [productData])
+
+  // filter data display
+
+
+  const handlefilterProduct = (category) => {
+    const filter = productData.filter(el => el.category.toLowerCase() === category.toLowerCase())
+    setDataFilter(() => {
+      return [
+        ...filter
+
+      ]
+    })
+  }
 
   return (
     <div className='p-2 md:p-4'>
@@ -29,7 +67,7 @@ const Home = (props) => {
           <p className='py-3 text-base text-justify'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,</p>
           <button className='font-bold bg-red-500 text-slate-200 px-4 py-2 rounded'>Order now</button>
         </div>
-        <div className='w-1/2 flex flex-wrap gap-5 p-4 justify-center'>
+        <div className='w-1/2 flex flex-wrap gap-5 p-4 justify-center '>
           {
             homeProductCardList[0] ? homeProductCardList.map(el => {
               return (
@@ -43,14 +81,14 @@ const Home = (props) => {
                 />
               )
             })
-            :loadingArr.map((el,index)=>{
-              return(
-                <HomeCard 
-                key={index}
-                loading={"Loading...."}
-                />
-              )
-            })
+              : loadingArr.map((el, index) => {
+                return (
+                  <HomeCard
+                    key={index}
+                    loading={"Loading...."}
+                  />
+                )
+              })
           }
 
         </div>
@@ -58,13 +96,23 @@ const Home = (props) => {
 
       </div>
       <div className=''>
-        <h2 className='font-bold text-2xl text-slate-800'>Fress Vegitables</h2>
-        <div className='flex gap-5'>
+        <div className='flex w-full items-center'>
+          <h2 className='font-bold text-2xl text-slate-800 mb-4'>Fress Vegitables</h2>
+
+          <div className='flex ml-auto gap-4'>
+            <button onClick={preProduct} className='bg-slate-300 hover:bg-slate-400 text-lg p-1 rounded
+          '> <GrPrevious /></button>
+            <button onClick={nextProduct} className='bg-slate-300 hover:bg-slate-400 text-lg p-1 rounded
+          '><GrNext /></button>
+          </div>
+
+        </div>
+        <div className='flex gap-5  overflow-scroll scrollbar-none ' ref={slideProductRef}>
           {
             homeProductCardListVegetables && homeProductCardListVegetables.map(el => {
-              return(
+              return (
 
-                <CardFeature 
+                <CardFeature
                   key={el._id}
                   name={el.name}
                   category={el.category}
@@ -76,8 +124,33 @@ const Home = (props) => {
           }
         </div>
 
+      </div>
+      <div className='my-5'>
+        <h2 className='font-bold text-2xl text-slate-800 mb-4'>Your Product</h2>
+        <div className='flex gap-4 justify-center overflow-scroll scrollbar-none'>
+          {categoryList && categoryList.map(el => {
+            return <FilterProduct category={el} onClick={()=>handlefilterProduct(el)} />
+          })}
+
+
         </div>
 
+        <div className='flex flex-wrap justify-center gap-4 my-4' >
+          {
+            dataFilter.map(el => {
+              return (
+                <CardFeature
+                  key={el._id}
+                  image={el.image}
+                  name={el.name}
+                  category={el.category}
+                  price={el.price}
+                />
+              )
+            })
+          }
+        </div>
+      </div>
     </div>
   )
 }

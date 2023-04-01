@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import logo from '../assest/logo.png';
 import { HiOutlineUserCircle } from 'react-icons/hi';
@@ -9,18 +9,18 @@ import { toast } from 'react-hot-toast';
 
 
 const Header = () => {
-  const [showMenu,SetShowMenu] = useState(false);
+  const [showMenu, SetShowMenu] = useState(false);
   const dispatch = useDispatch();
-  const userData = useSelector((state)=>state.user);
-  console.log(userData,"userData header")
-  const handlaShowMenu = (preve)=>{
+  const userData = useSelector((state) => state.user);
+  console.log(userData, "userData header")
+  const handlaShowMenu = (preve) => {
     SetShowMenu(preve => !showMenu);
-  } 
+  }
 
-  const handleLogout = () =>{
+  const handleLogout = () => {
     dispatch(logOutRedux());
     toast("Logout successfull")
-    
+
   }
   console.log(process.env.REACT_APP_ADMIN_EMAIL)
   return (
@@ -34,14 +34,11 @@ const Header = () => {
         </Link>
 
         <div className='flex items-center gap-5 md:gap-6 text-base md:text-lg'>
-          <nav className='flex gap-4 md:gap-7 text-base md:text-lg'>
+          <nav className='gap-4 md:gap-7 text-base md:text-lg hidden md:flex'>
             <Link to={""}>Home</Link>
             <Link to={"menu"}>Menu</Link>
             <Link to={"about"}>About</Link>
             <Link to={"contact"}>Contact</Link>
-
-
-
           </nav>
           <div className='text-2xl text-slate-600 relative' >
             <BsCartFill />
@@ -49,7 +46,7 @@ const Header = () => {
               0
             </div>
           </div>
-          <div className='text-slate-600'  onClick={handlaShowMenu}>
+          <div className='text-slate-600' onClick={handlaShowMenu}>
             <div className='text-3xl cursor-pointer w-8 h-8 rounded-full overflow-hidden drop-shadow-md'>
               {
                 userData?.image ? <img src={userData?.image} className="h-full w-full" /> : <HiOutlineUserCircle />
@@ -57,25 +54,31 @@ const Header = () => {
             </div>
             {
               showMenu && (
-                <div className='absolute right-2  py-2 bg-white shadow drop-shadow-md flex flex-col'>
+                <div className='absolute right-2  py-2 bg-white shadow drop-shadow-md flex flex-col min-w-[120px] text-center'>
                   {
-                  userData.email === process.env.REACT_APP_ADMIN_EMAIL && <Link to={"newProduct"} className='whitespace-nowrap cursor-pointer px-2'>New product</Link>
-                  
-                  }
-               
-                {
-                  userData.image ? <p className='cursor-pointer text-white bg-red-400 px-2' onClick={handleLogout}> Logout ({userData.firstName})</p> :
-                  <Link to={"login"} className='whitespace-nowrap cursor-pointer px-2'>Login</Link>
+                    userData.email === process.env.REACT_APP_ADMIN_EMAIL && <Link to={"newProduct"} className='whitespace-nowrap cursor-pointer px-2'>New product</Link>
 
-                }
-                
-               
-  
-              </div>
+                  }
+
+                  {
+                    userData.image ? <p className='cursor-pointer text-white bg-red-400 px-2' onClick={handleLogout}> Logout ({userData.firstName})</p> :
+                      <Link to={"login"} className='whitespace-nowrap cursor-pointer px-2'>Login</Link>
+
+                  }
+
+                  <nav className='text-base md:text-lg flex flex-col md:hidden'>
+                    <Link className='px-2 py-1' to={""}>Home</Link>
+                    <Link className='px-2 py-1' to={"menu"}>Menu</Link>
+                    <Link className='px-2 py-1' to={"about"}>About</Link>
+                    <Link className='px-2 py-1' to={"contact"}>Contact</Link>
+                  </nav>
+
+
+                </div>
 
               )
             }
-           
+
           </div>
         </div>
       </div>
