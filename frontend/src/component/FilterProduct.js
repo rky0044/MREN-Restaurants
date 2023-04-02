@@ -3,7 +3,7 @@ import { CiForkAndKnife } from 'react-icons/ci'
 
 const FilterProduct = ({ category,onClick }) => {
 
-    console.log(category,)
+   
     return (
         <div onClick={onClick}>
             <div className='text-3xl p-5 bg-yellow-500 rounded-full cursor-pointer'>

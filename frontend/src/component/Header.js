@@ -12,7 +12,7 @@ const Header = () => {
   const [showMenu, SetShowMenu] = useState(false);
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user);
-  console.log(userData, "userData header")
+
   const handlaShowMenu = (preve) => {
     SetShowMenu(preve => !showMenu);
   }
@@ -22,7 +22,12 @@ const Header = () => {
     toast("Logout successfull")
 
   }
-  console.log(process.env.REACT_APP_ADMIN_EMAIL)
+
+
+
+  const cartItmeNumber = useSelector((state)=> state.product.cartItme)
+
+ 
   return (
     <header className='fixed shadow-md w-full h-16 px-2 md:px-4 z-50 bg-white '>
       {/* desktop */}
@@ -36,14 +41,16 @@ const Header = () => {
         <div className='flex items-center gap-5 md:gap-6 text-base md:text-lg'>
           <nav className='gap-4 md:gap-7 text-base md:text-lg hidden md:flex'>
             <Link to={""}>Home</Link>
-            <Link to={"menu"}>Menu</Link>
+            <Link to={"menu/6423e604e2390a71f825b243"}>Menu</Link>
             <Link to={"about"}>About</Link>
             <Link to={"contact"}>Contact</Link>
           </nav>
-          <div className='text-2xl text-slate-600 relative' >
+          <div className='text-2xl text-slate-600 relative mouse-pointer' >
+            <Link to={"/cart"} >
             <BsCartFill />
+            </Link>
             <div className='absolute -top-2 right-0 text-white bg-red-500 h-4 w-4 m-0 text-base text-center rounded-full'>
-              0
+             {cartItmeNumber?.length}
             </div>
           </div>
           <div className='text-slate-600' onClick={handlaShowMenu}>
@@ -68,7 +75,7 @@ const Header = () => {
 
                   <nav className='text-base md:text-lg flex flex-col md:hidden'>
                     <Link className='px-2 py-1' to={""}>Home</Link>
-                    <Link className='px-2 py-1' to={"menu"}>Menu</Link>
+                    <Link className='px-2 py-1' to={"menu/6423e604e2390a71f825b243"}>Menu</Link>
                     <Link className='px-2 py-1' to={"about"}>About</Link>
                     <Link className='px-2 py-1' to={"contact"}>Contact</Link>
                   </nav>
