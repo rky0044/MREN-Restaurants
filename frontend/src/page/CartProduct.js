@@ -1,9 +1,17 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { TbPlus, TbMinus } from "react-icons/tb"
 import {AiFillDelete} from"react-icons/ai"
+import { deleteCartItems,increaseQty,decreaseQty } from '../redux/productSlice'
 
 const CartProduct = (props) => {
+
+
+  
+  const dispatch = useDispatch();
+  console.log(props.id,"iddddddd in cardproduct page")
+
+
 
   return (
     <div className=' bg-slate-200 p-2 flex gap-4 rounded border border-slate-300'>
@@ -17,10 +25,10 @@ const CartProduct = (props) => {
         <h3 className="font-semibold text-slate-600  capitalize text-lg md:text-xl">
           {props.name}
         </h3>
-        <div className='cursor-pointer text '>
-          <span className='text-slate-700 hover:text-red-500 '>
+        <div className='cursor-pointer text-slate-700 hover:text-red-500 ' onClick={()=>dispatch(deleteCartItems(props.id))}>
+         
             <AiFillDelete />
-          </span>
+         
         </div>
         </div>
         <p className=" text-slate-500  font-medium ">{props.category}</p>
@@ -32,11 +40,11 @@ const CartProduct = (props) => {
         <div className='flex justify-between'>
           <div className="flex gap-3 items-center ">
 
-            <button className="bg-slate-300 py-1 mt-2 rounded hover:bg-slate-400 p-1">
+            <button onClick={()=>dispatch(increaseQty(props.id))} className="bg-slate-300 py-1 mt-2 rounded hover:bg-slate-400 p-1">
               <TbPlus />
             </button>
             <p>{props.qty}</p>
-            <button className="bg-slate-300 py-1 mt-2 rounded hover:bg-slate-400 p-1">
+            <button onClick={()=>dispatch(decreaseQty(props.id))} className="bg-slate-300 py-1 mt-2 rounded hover:bg-slate-400 p-1">
               <TbMinus />
             </button>
           </div>

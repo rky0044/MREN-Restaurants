@@ -22,6 +22,7 @@ const Cart = (props) => {
                 return(
                   <CartProduct 
                   key={el._id} 
+                  id={el._id}
                   name={el.name}
                   category={el.category}
                   image={el.image}
